@@ -4,8 +4,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from .api_auth.views import router as auth_router
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+from .routers.auth_router import router as auth_page_router
+from pathlib import Path
 
 app = FastAPI(
     title = settings.app_name,
@@ -14,6 +14,7 @@ app = FastAPI(
     redoc_url = '/redoc'
 )
 
+STATIC_DIR = Path("C:/Users/kozin/OneDrive/Dokumentumok/fastapi-practice/frontend")
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,19 +25,8 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(auth_page_router)
 
-router = APIRouter(prefix="/pages", tags=["Frontend"])
+app.mount("/css", StaticFiles(directory=str(STATIC_DIR / "css")), name="css")
+app.mount("/images", StaticFiles(directory=str(STATIC_DIR / "images")), name="images")
 
-templates = Jinja2Templates(directory="frontend/templates")
-
-@router.get("/authorize")
-async def get_auth_page(
-    request: Request
-):
-    return templates.TemplateResponse(name="auth_window.html", context={"request": request})
-
-
-
-@app.get('/health')
-def health_check():
-    return {'status': 'healthy'}
