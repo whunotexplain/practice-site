@@ -16,6 +16,9 @@ app = FastAPI(
 
 STATIC_DIR = Path("C:/Users/kozin/OneDrive/Dokumentumok/fastapi-practice/frontend")
 
+app.mount("/css", StaticFiles(directory=str(STATIC_DIR / "css")), name="css")
+app.mount("/images", StaticFiles(directory=str(STATIC_DIR / "images")), name="images")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins = settings.cors_origins,
@@ -27,6 +30,5 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(auth_page_router)
 
-app.mount("/css", StaticFiles(directory=str(STATIC_DIR / "css")), name="css")
-app.mount("/images", StaticFiles(directory=str(STATIC_DIR / "images")), name="images")
+
 
