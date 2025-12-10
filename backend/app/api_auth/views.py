@@ -5,28 +5,20 @@ from fastapi.security import HTTPBasicCredentials, HTTPBasic
 import secrets
 from time import time
 
-router = APIRouter(prefix="/authorize", tags=["Authenticate"])
+
+router = APIRouter(prefix="/demo-auth", tags=["Demo Auth"])
 
 security = HTTPBasic()
 
 
 usernames_to_passwords = {
     "egor": "egor",
-    "admin": "admin"
+    "admin": "admin",
+    "egor": "12345"
 }
 
 
-@router.get("/authenticate/")
-def auth_credentials(
-    credentials: Annotated[HTTPBasicCredentials, Depends(security)]
-):
-    return {
-        "Message":"Hi",
-        "username": credentials.username,
-        "password": credentials.password,
-    }
-
-def get_auth_user_username(
+def authenticate_user(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)]
 ):
     unauhted_exc = HTTPException(
@@ -38,7 +30,7 @@ def get_auth_user_username(
     if correct_password is None:
         raise unauhted_exc
 
-    #secrets
+
     if not secrets.compare_digest(
         credentials.password.encode('utf-8'),
         correct_password.encode('utf-8'),
@@ -47,17 +39,21 @@ def get_auth_user_username(
     
     return credentials.username
 
-
-
-@router.get("/basic-auth-username/")
-def demo_auth_some_http_header(
-    auth_username: str = Depends(get_auth_user_username)
+@router.get("/base-auth/")
+def demo_auth(
+    auth_username: str = Depends(authenticate_user)
 ):
     return {
         "Message": f"Hi, {auth_username}!",
         "username": auth_username
     }
-    
 
 
- 
+@router.post("/login/")
+def login(
+    username: str = Depends(authenticate_user)
+):
+    return {
+        "message": "Login successful",
+        "username": username
+    }
