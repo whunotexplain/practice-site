@@ -6,16 +6,10 @@ import secrets
 from time import time
 
 
+
 router = APIRouter(prefix="/demo-auth", tags=["Demo Auth"])
 
 security = HTTPBasic()
-
-
-usernames_to_passwords = {
-    "egor": "egor",
-    "admin": "admin",
-    "egor": "12345"
-}
 
 
 def authenticate_user(
