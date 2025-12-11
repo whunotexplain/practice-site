@@ -6,7 +6,6 @@ import secrets
 from time import time
 
 
-
 router = APIRouter(prefix="/demo-auth", tags=["Demo Auth"])
 
 security = HTTPBasic()

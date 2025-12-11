@@ -10,6 +10,5 @@ class UserBase(BaseModel):
 
 
 
-class Create_User(BaseModel):
-    login: str = Field(..., min_length=3, max_length=20)
-    password: str = Field(..., min_length=3, max_length=20) 
+class Create_User(UserBase):
+    pass

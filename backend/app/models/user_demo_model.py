@@ -9,5 +9,5 @@ class Users(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     login = Column(String, unique=True, nullable=False, index=True)
-    login = Column(String, unique=True, nullable=False, index=True)
+    password = Column(String, unique=True, nullable=False, index=True)
 
