@@ -7,5 +7,5 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.post("/users/")
-def create_usere(user: CreateUser):
+def create_user(user: CreateUser):
     return crud.create_user(user_in=user)
