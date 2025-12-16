@@ -33,3 +33,9 @@ app.include_router(auth_router)
 app.include_router(auth_page_router)
 app.include_router(new_page_demo)
 app.include_router(users_router)
+
+
+# base log
+# app.include_router(admin)
+# app.include_router(volonteur)
+# app.include_router()
