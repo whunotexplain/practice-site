@@ -1,9 +1,7 @@
 import secrets
-import uuid
-from time import time
-from typing import Annotated, Any
+from typing import Annotated
 
-from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 router = APIRouter(prefix="/demo-auth", tags=["Demo Auth"])
