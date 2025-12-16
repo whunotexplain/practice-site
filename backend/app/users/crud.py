@@ -1,7 +1,9 @@
-from .schemas import CreateUser
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from ..models.user_demo_model import Users
 
 
-def create_user(user_in: CreateUser) -> dict:
+def create_user(user_in: Users) -> dict:
     user = user_in.model_dump()
     return {
         "success": True,
@@ -18,3 +20,9 @@ def get_user_by_id(id_user: int) -> dict:
             "password": f"password_{id_user}",
         },
     }
+
+
+async def get_user_by_login(db: AsyncSession, login: str):
+    """Получить пользователя по username"""
+    result = await db.execute(select(Users).where(Users.login == login))
+    return result.scalar_one_or_none()

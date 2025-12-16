@@ -1,27 +1,37 @@
 import secrets
 from typing import Annotated
 
+from app.database.db import get_db
+from app.models.user_demo_model import Users
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/demo-auth", tags=["Demo Auth"])
 
 security = HTTPBasic()
 
 
-def authenticate_user(credentials: Annotated[HTTPBasicCredentials, Depends(security)]):
+async def authenticate_user(
+    credentials: Annotated[HTTPBasicCredentials, Depends(security)],
+    db: AsyncSession = Depends(get_db),
+):
     unauhted_exc = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid username or password",
         headers={"WWW-Authenticate": "Basic"},
     )
-    correct_password = ClassUser.get(credentials.username)
-    if correct_password is None:
+
+    result = await db.execute(select(Users).where(Users.login == credentials.username))
+    user = result.scalar_one_or_none()
+
+    if user is None:
         raise unauhted_exc
 
     if not secrets.compare_digest(
         credentials.password.encode("utf-8"),
-        correct_password.encode("utf-8"),
+        user.password.encode("utf-8"),
     ):
         raise unauhted_exc
 
