@@ -1,9 +1,7 @@
-from typing import override
-
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
-from ..database import Base
+from ..database.db import Base
 
 
 class Users(Base):
