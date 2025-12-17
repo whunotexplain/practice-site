@@ -1,23 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Авторизация</title>
-    <link rel="stylesheet" href="../css/main.css">
-</head>
-<body>
-    <article class="authorization">
-        <img src="../images/logo.png" alt="logo" width="200">
-        <h1>Авторизация</h1>
-        <input type="text" name="login"  placeholder="Логин:" >
-        <br>
-        <input type="password" name="password" placeholder="Пароль:">
-        <br>
-        <a href="./templates/index.html">
-            <button class="enter_button">Войти</button>
-        </a>
-    </article>
-</body>
-</html> 
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Авторизация</title>
+        <link rel="stylesheet" href="../css/main.css" />
+    </head>
+    <body>
+        <article class="authorization">
+            <img src="../images/logo.png" alt="logo" width="200" />
+            <h1>Авторизация</h1>
 
+            <form id="loginForm">
+                <input
+                    type="text"
+                    id="login"
+                    name="login"
+                    placeholder="Логин:"
+                    required
+                />
+                <br />
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Пароль:"
+                    required
+                />
+                <br />
+                <button type="submit" class="enter_button">Войти</button>
+            </form>
+
+            <div id="error" class="error-message"></div>
+            <div id="success" class="success-message"></div>
+        </article>
+
+        <script>
+            document
+                .getElementById("loginForm")
+                .addEventListener("submit", async function (e) {
+                    e.preventDefault();
+
+                    const login = document.getElementById("login").value;
+                    const password = document.getElementById("password").value;
+
+                    // Очищаем сообщения
+                    document.getElementById("error").style.display = "none";
+                    document.getElementById("success").style.display = "none";
+
+                    if (!login || !password) {
+                        showError("Заполните все поля!");
+                        return;
+                    }
+
+                    try {
+                        // Создаем Basic Auth строку
+                        const authString = btoa(`${login}:${password}`);
+
+                        const response = await fetch("/api/demo-auth/login/", {
+                            method: "POST",
+                            headers: {
+                                Authorization: `Basic ${authString}`,
+                                "Content-Type": "application/json",
+                            },
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            showSuccess("Успешный вход! Перенаправление...");
+
+                            // Редирект в зависимости от роли
+                            setTimeout(() => {
+                                if (data.redirect_to) {
+                                    window.location.href = data.redirect_to;
+                                } else if (data.user && data.user.role) {
+                                    window.location.href = `/pages/${data.user.role}/dashboard`;
+                                } else {
+                                    window.location.href = "/";
+                                }
+                            }, 1000);
+                        } else {
+                            if (response.status === 401) {
+                                showError("Неверный логин или пароль!");
+                            } else {
+                                showError(`Ошибка сервера: ${response.status}`);
+                            }
+                        }
+                    } catch (error) {
+                        showError("Ошибка соединения с сервером");
+                        console.error(error);
+                    }
+                });
+
+            function showError(message) {
+                const errorDiv = document.getElementById("error");
+                errorDiv.textContent = message;
+                errorDiv.style.display = "block";
+            }
+
+            function showSuccess(message) {
+                const successDiv = document.getElementById("success");
+                successDiv.textContent = message;
+                successDiv.style.display = "block";
+            }
+        </script>
+    </body>
+</html>
