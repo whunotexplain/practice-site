@@ -26,7 +26,7 @@ async def authenticate_user(
     unauth_exc = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid username or password",
-        headers={"WWW-Authenticate": "Basic"},
+        # headers={"WWW-Authenticate": "Basic"},
     )
 
     result = await db.execute(
