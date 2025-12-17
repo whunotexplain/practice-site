@@ -14,7 +14,7 @@ BASE_DIR = Path(
 templates = Jinja2Templates(directory=str(BASE_DIR))
 
 
-@router.get("/volonteur")
+@router.get("/volonteur/dashboard")
 async def get_auth_page(request: Request):
     return templates.TemplateResponse(
         name="volonteur/dashboard.html", context={"request": request}

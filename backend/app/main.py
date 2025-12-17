@@ -1,12 +1,12 @@
 from pathlib import Path
 
-from fastapi import APIRouter, FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 
+from .admin.views import router as admin_router
 from .api_auth.authorisation import router as auth_router
 from .routers.auth_router import router as auth_page_router
 from .routers.new_page_demo_router import router as new_page_demo
@@ -33,9 +33,4 @@ app.include_router(auth_router)
 app.include_router(auth_page_router)
 app.include_router(new_page_demo)
 app.include_router(users_router)
-
-
-# base log
-# app.include_router(admin)
-# app.include_router(volonteur)
-# app.include_router()
+app.include_router(admin_router)
