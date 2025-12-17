@@ -5,11 +5,9 @@ from fastapi.templating import Jinja2Templates
 
 router = APIRouter(prefix="/pages", tags=["Frontend"])
 
-
 BASE_DIR = Path(
     "C:/Users/kozin/OneDrive/Dokumentumok/fastapi-practice/frontend/templates"
 )
-
 
 templates = Jinja2Templates(directory=str(BASE_DIR))
 

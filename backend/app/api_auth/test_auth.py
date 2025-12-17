@@ -4,7 +4,7 @@ from typing import Annotated, Literal, Tuple, Union
 from app.database.db import get_db
 from app.models.admin_model import Administrator
 from app.models.volonteur_model import Volonteur
-from fastapi import Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -57,7 +57,6 @@ async def authenticate_user(
     raise unauth_exc
 
 
-# Зависимости для контроля доступа
 async def get_current_user(
     user_and_role: Tuple[Union[Administrator, Volonteur], str] = Depends(
         authenticate_user

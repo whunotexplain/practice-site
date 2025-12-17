@@ -6,10 +6,6 @@ class AdminBase(BaseModel):
     password: str = Field(..., min_length=3, max_length=20)
 
 
-class CreateAdmin(AdminBase):
-    pass
-
-
 class AdminInDB(AdminBase):
     id: int
 
