@@ -8,8 +8,9 @@ from app.config import settings
 
 from .admin.views import router as admin_router
 from .api_auth.authorisation import router as auth_router
+from .routers.admin_page import router as admin_page_router
 from .routers.auth_router import router as auth_page_router
-from .routers.new_page_demo_router import router as new_page_demo
+from .routers.volonteur_page import router as volonteur_page_router
 from .users.views import router as users_router
 
 app = FastAPI(
@@ -31,6 +32,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(auth_page_router)
-app.include_router(new_page_demo)
 app.include_router(users_router)
 app.include_router(admin_router)
+app.include_router(admin_page_router)
+app.include_router(volonteur_page_router)

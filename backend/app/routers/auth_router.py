@@ -1,21 +1,16 @@
-from pathlib import Path
+from app.api_auth.test_auth import authenticate_user
+from fastapi import APIRouter, Depends, Request
+from fastapi.responses import RedirectResponse
 
-from fastapi import APIRouter, Request
-from fastapi.templating import Jinja2Templates
-
-router = APIRouter(prefix="/pages", tags=["Frontend"])
-
-
-BASE_DIR = Path(
-    "C:/Users/kozin/OneDrive/Dokumentumok/fastapi-practice/frontend/templates"
-)
+router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-templates = Jinja2Templates(directory=str(BASE_DIR))
+@router.get("/login")
+async def login(request: Request, user_and_role=Depends(authenticate_user)):
+    """Авторизация с редиректом на нужную страницу"""
+    user, role = user_and_role
 
-
-@router.get("/authorize")
-async def get_auth_page(request: Request):
-    return templates.TemplateResponse(
-        name="auth_window.html", context={"request": request}
-    )
+    if role == "admin":
+        return RedirectResponse(url="/admin/dashboard")
+    else:
+        return RedirectResponse(url="/volonteur/dashboard")
