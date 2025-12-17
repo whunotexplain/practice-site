@@ -12,7 +12,7 @@ BASE_DIR = Path(
 templates = Jinja2Templates(directory=str(BASE_DIR))
 
 
-@router.get("/authorize")
+@router.get("/auth")
 async def get_auth_page(request: Request):
     return templates.TemplateResponse(
         name="auth_window.html", context={"request": request}

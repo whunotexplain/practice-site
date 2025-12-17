@@ -47,4 +47,4 @@ app.include_router(admin_router)
 async def root():
     from fastapi.responses import RedirectResponse
 
-    return RedirectResponse(url="/pages/authorize")
+    return RedirectResponse(url="/pages/auth")
