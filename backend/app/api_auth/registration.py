@@ -4,6 +4,7 @@ from fastapi.security import HTTPBasic
 from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from ..users import crud
 from ..users.schemas import CreateUser
 
 router = APIRouter(prefix="/registration", tags=["Volonteur registartion"])

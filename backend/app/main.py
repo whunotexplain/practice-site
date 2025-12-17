@@ -11,6 +11,7 @@ from .api_auth.authorisation import router as auth_router
 from .api_auth.registration import router as registration_router
 from .routers.admin_page import router as admin_page_router
 from .routers.auth_page import router as auth_page_router
+from .routers.register_page import router as register_page_router
 from .routers.volonteur_page import router as volonteur_page_router
 from .users.views import router as users_router
 
@@ -36,6 +37,7 @@ app.add_middleware(
 app.include_router(admin_page_router)
 app.include_router(volonteur_page_router)
 app.include_router(auth_page_router)
+app.include_router(register_page_router)
 
 
 #

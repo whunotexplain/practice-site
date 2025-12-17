@@ -3,17 +3,17 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Авторизация</title>
+        <title>Регистрация</title>
         <link rel="stylesheet" href="../css/main.css" />
 
-        <script src="../js/auth.js" defer></script>
+        <script src="../js/register.js" defer></script>
     </head>
     <body>
         <article class="authorization">
             <img src="../images/logo.png" alt="logo" width="200" />
-            <h1>Авторизация</h1>
+            <h1>Регистрация</h1>
 
-            <form id="loginForm">
+            <form id="registerForm">
                 <input
                     type="text"
                     id="login"
@@ -21,17 +21,15 @@
                     placeholder="Логин:"
                     required
                 />
-                <br />
+
                 <input
-                    type="phone_number"
+                    type="tel"
                     id="phone_number"
                     name="phone_number"
                     placeholder="Номер телефона:"
                     required
                 />
-                <br />
 
-                <br />
                 <input
                     type="password"
                     id="password"
@@ -39,9 +37,9 @@
                     placeholder="Пароль:"
                     required
                 />
-                <br />
+
                 <input
-                    type="password_check"
+                    type="password"
                     id="password_check"
                     name="password_check"
                     placeholder="Повторите пароль:"
