@@ -1,4 +1,3 @@
-// register.js
 document.addEventListener("DOMContentLoaded", function () {
   const registerForm = document.getElementById("registerForm");
   const errorDiv = document.getElementById("error");
@@ -8,25 +7,21 @@ document.addEventListener("DOMContentLoaded", function () {
     registerForm.addEventListener("submit", async function (event) {
       event.preventDefault();
 
-      // Очистка сообщений
       errorDiv.textContent = "";
       successDiv.textContent = "";
       errorDiv.style.display = "none";
       successDiv.style.display = "none";
 
-      // Получаем данные формы
       const login = document.getElementById("login").value.trim();
       const phoneNumber = document.getElementById("phone_number").value.trim();
       const password = document.getElementById("password").value;
       const passwordCheck = document.getElementById("password_check").value;
 
-      // Валидация
       if (password !== passwordCheck) {
         showError("Пароли не совпадают");
         return;
       }
 
-      // Подготовка данных
       const userData = {
         login: login,
         phone_number: phoneNumber,
@@ -34,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       try {
-        // ВАЖНО: Укажите правильный URL вашего сервера
         const response = await fetch(
           "http://localhost:8080/registration/register",
           {
@@ -51,10 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (response.ok) {
           showSuccess("Аккаунт успешно создан!");
 
-          // Перенаправление через 2 секунды
           setTimeout(() => {
             window.location.href = "/pages/login";
-          }, 2000);
+          }, 1000);
         } else {
           showError(data.detail || "Ошибка при регистрации");
         }

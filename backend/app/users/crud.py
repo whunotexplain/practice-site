@@ -23,7 +23,6 @@ async def create_user_in_db(db: AsyncSession, user_data: CreateUser):
     # Хешируем пароль
     hashed_password = pwd_context.hash(user_data.password)
 
-    # Создаем объект пользователя для БД
     new_user = Users(
         login=user_data.login,
         phone_number=user_data.phone_number,

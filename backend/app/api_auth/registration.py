@@ -16,11 +16,9 @@ crypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @router.post("/register")
 async def register(user: CreateUser, db: AsyncSession = Depends(get_db)):
-    """
-    Регистрация нового пользователя
-    """
+    """Регистрация нового пользователя"""
     try:
-        db_user = crud.create_user(db, user)
+        db_user = crud.create_user_in_db(db, user)
         return db_user
     except HTTPException as e:
         raise e
