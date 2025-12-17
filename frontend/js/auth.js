@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       try {
-        // ПРАВИЛЬНЫЙ ПУТЬ К API
         const authString = btoa(`${login}:${password}`);
 
         const response = await fetch("/demo-auth/login/", {
