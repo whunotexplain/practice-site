@@ -5,7 +5,7 @@ from app.database.db import get_db
 from app.models.admin_model import Administrator
 from app.models.volonteur_model import Volonteur
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from passlib.context import CryptContext
 from sqlalchemy import select
@@ -29,31 +29,20 @@ async def authenticate_user(
         headers={"WWW-Authenticate": "Basic"},
     )
 
-    # Сначала проверяем админов
     result = await db.execute(
         select(Administrator).where(Administrator.login == credentials.username)
     )
     admin = result.scalar_one_or_none()
 
     if admin is not None:
-        # ВАЖНО: Проверяем хэш пароля!
-        # Если пароль в БД хранится в открытом виде, оставьте secrets.compare_digest
-        # Если пароль хэширован - используйте pwd_context.verify
-
-        # Вариант 1: Если пароли в БД НЕ хэшированы
         if not secrets.compare_digest(
             credentials.password.encode("utf-8"),
             admin.password.encode("utf-8"),
         ):
             raise unauth_exc
 
-        # Вариант 2: Если пароли в БД хэшированы
-        # if not pwd_context.verify(credentials.password, admin.password):
-        #     raise unauth_exc
-
         return admin, "admin"
 
-    # Проверяем волонтеров
     result = await db.execute(
         select(Volonteur).where(Volonteur.login == credentials.username)
     )
@@ -81,7 +70,6 @@ async def login(user_and_role=Depends(authenticate_user)):
     """Основной эндпоинт для авторизации - возвращает JSON"""
     user, role = user_and_role
 
-    # Возвращаем JSON с информацией для фронтенда
     return JSONResponse(
         {
             "status": "success",

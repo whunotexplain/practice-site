@@ -1,3 +1,4 @@
+// Замените код в auth.js:
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
 
@@ -19,7 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const authString = btoa(`${login}:${password}`);
 
-        const response = await fetch("/api/demo-auth/login/", {
+        // ИСПРАВЛЕННЫЙ ПУТЬ - БЕЗ /api/
+        const response = await fetch("/demo-auth/login/", {
           method: "POST",
           headers: {
             Authorization: `Basic ${authString}`,
